@@ -8,16 +8,7 @@ TransferHub aims to bring remote file access, secure transfers, synchronization,
 
 ## Project status
 
-**Early development.** This repository currently contains the product definition and architecture plan. The first application scaffold is being added separately. FTP/FTPS/SFTP connections, remote browsing, and file transfers are planned MVP capabilities, not yet implemented.
-
-## Product goals
-
-- Connect to existing FTP, explicit/implicit FTPS, and SFTP servers.
-- Manage local and remote files through a clear dual-pane browser interface.
-- Queue, monitor, retry, and inspect transfers.
-- Move data between remote endpoints without unnecessary browser round-trips.
-- Offer an optional managed-server mode for users who want to host file-transfer services.
-- Add WebDAV, S3-compatible storage, sharing, and automation after the core client is reliable.
+**Early scaffold.** The repository now contains product documentation, a Next.js web shell, and a Go health/status API. The connection form is currently a front-end prototype: it stores draft profiles in page memory only. Live FTP/FTPS/SFTP connectors, credential vaulting, remote browsing, and file transfers are not implemented yet.
 
 ## First-week MVP
 
@@ -33,19 +24,57 @@ The first one-week build sprint targets a **usable end-to-end MVP**, not every f
 
 A capability is only considered complete when it works end-to-end against a real test server. UI-only placeholders must be labelled as such.
 
-## Planned stack
+## Stack
 
 | Layer | Choice |
 | --- | --- |
-| Web | Next.js 16, React, TypeScript |
-| API and transfer workers | Go 1.27 |
+| Web | Next.js 16.4.6, React 19.3.1, TypeScript |
+| API and transfer workers | Go 1.27.4 |
 | API transport | REST + WebSocket for transfer events |
-| Persistence | PostgreSQL (connection metadata and users) |
-| Secrets | Authenticated encryption using a deployment-managed key |
-| Deployment | Docker Compose first |
+| Persistence (planned) | PostgreSQL |
+| Secrets (planned) | Authenticated encryption with a deployment-managed key |
+| Deployment | Docker Compose |
 | Optional server engine | Evaluate SFTPGo Open Source Edition integration |
 
-Framework/runtime versions are starting baselines and should be updated through reviewed dependency changes.
+## Run locally
+
+### Requirements
+
+- Node.js 20.9 or newer
+- npm
+- Go 1.27.4
+
+### Start the API
+
+```bash
+cd services/api
+go run .
+``
+
+The API health endpoint is available at `http://localhost:8080/health`.
+
+### Start the web app
+
+In another terminal:
+
+```bash
+cd apps/web
+cp .env.example .env.local
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### Run with Docker Compose
+
+From the repository root:
+
+```bash
+docker compose up --build
+```
+
+Open [http://localhost:3000](http://localhost:3000). The API is bound to localhost on port 8080 for local development.
 
 ## Repository layout
 
@@ -59,13 +88,10 @@ docs/
   ARCHITECTURE.md      System boundaries and technical design
   ROADMAP.md           One-week MVP sprint and later phases
   SECURITY.md          Threat model and security requirements
+docker-compose.yml     Local container orchestration
 ```
 
-## Development
-
-The application scaffold and local development instructions will be added in the first implementation commit. Do not put real server passwords, SSH private keys, API tokens, or production data in this repository.
-
-## Product documentation
+## Documentation
 
 - [Product requirements](docs/PRD.md)
 - [Architecture](docs/ARCHITECTURE.md)

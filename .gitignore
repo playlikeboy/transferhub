@@ -1,0 +1,30 @@
+# Dependencies and build output
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+*.log
+
+# Go build artifacts
+services/api/transferhub-api
+*.test
+*.out
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
